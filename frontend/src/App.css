@@ -1,0 +1,438 @@
+/* ---------- Tokens ---------- */
+:root {
+  --red: #e3350d;
+  --red-dark: #c22a0a;
+  --red-darker: #8f1f08;
+  --shell-black: #1c1c1e;
+  --shell-black-soft: #2a2a2c;
+  --screen-bg: #9ea791;
+  --screen-bg-dim: #8a9380;
+  --screen-text: #2b3020;
+  --lens-cyan: #6fd8f0;
+  --lens-cyan-dark: #2a9fc2;
+  --yellow: #ffcc02;
+  --green: #3fa34d;
+  --cream: #f2efe4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 20%, #3a3a40 0%, #17171a 70%);
+  font-family: "Chakra Petch", sans-serif;
+}
+
+.stage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+/* ---------- Shell ---------- */
+.pokedex {
+  width: 360px;
+  background: linear-gradient(160deg, var(--red) 0%, var(--red-dark) 55%, var(--red-darker) 100%);
+  border-radius: 22px 22px 26px 26px;
+  padding: 18px 18px 22px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    inset 0 2px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.25);
+  position: relative;
+  border: 3px solid var(--shell-black);
+}
+
+/* left hinge strip, evokes the flip-open device */
+.pokedex::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 10px;
+  background: var(--shell-black);
+  border-radius: 4px;
+  box-shadow: inset -2px 0 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Top bar: lens + lights + brand ---------- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 4px 16px 10px;
+}
+
+.lens-housing {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--shell-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.lens {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #eafcff 0%, var(--lens-cyan) 35%, var(--lens-cyan-dark) 80%);
+  position: relative;
+  box-shadow:
+    0 0 0 3px rgba(255, 255, 255, 0.15),
+    0 0 14px rgba(111, 216, 240, 0.6);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.lens-shine {
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  width: 14px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  transform: rotate(-20deg);
+}
+
+.is-scanning .lens {
+  animation: lens-pulse 1s ease-in-out infinite;
+}
+
+@keyframes lens-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 3px rgba(255, 255, 255, 0.15),
+      0 0 14px rgba(111, 216, 240, 0.6);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px rgba(255, 255, 255, 0.3),
+      0 0 26px rgba(111, 216, 240, 1);
+  }
+}
+
+.indicator-lights {
+  display: flex;
+  gap: 6px;
+}
+
+.light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--shell-black);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.light-yellow {
+  background: var(--yellow);
+}
+
+.light-green {
+  background: var(--green);
+}
+
+.brand {
+  margin: 0 0 0 auto;
+  font-family: "Press Start 2P", monospace;
+  font-size: 13px;
+  color: var(--cream);
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.5px;
+}
+
+/* ---------- Screen ---------- */
+.screen-bezel {
+  background: var(--shell-black);
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.6);
+}
+
+.screen {
+  --type-color: #9ea791;
+  background: linear-gradient(180deg, var(--screen-bg) 0%, var(--screen-bg-dim) 100%);
+  border-radius: 4px;
+  min-height: 260px;
+  padding: 14px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #45493c;
+  display: flex;
+  flex-direction: column;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.06) 0px,
+    rgba(0, 0, 0, 0.06) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+.screen-msg {
+  margin: auto;
+  text-align: center;
+  font-family: "VT323", monospace;
+  color: var(--screen-text);
+}
+
+.screen-msg p {
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: 2px;
+}
+
+.screen-msg-sub {
+  font-size: 18px !important;
+  margin-top: 6px !important;
+  opacity: 0.75;
+}
+
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Entry / result card, rendered inside the LCD screen */
+.entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "VT323", monospace;
+  color: var(--screen-text);
+  z-index: 1;
+}
+
+.entry-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.entry-id {
+  letter-spacing: 1px;
+  opacity: 0.75;
+}
+
+.entry-type {
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.entry-sprite {
+  width: 110px;
+  height: 110px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.25));
+  margin: 4px 0;
+}
+
+.entry-name {
+  font-family: "Press Start 2P", monospace;
+  font-size: 15px;
+  text-transform: uppercase;
+  margin: 4px 0 12px;
+  text-align: center;
+}
+
+.entry-stats {
+  display: flex;
+  gap: 22px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+.stat-value {
+  font-size: 20px;
+}
+
+/* ---------- Control panel ---------- */
+.control-panel {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  padding: 16px 6px 4px;
+}
+
+.dpad-decor {
+  display: grid;
+  grid-template-columns: repeat(3, 12px);
+  grid-template-rows: repeat(3, 12px);
+  gap: 2px;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.dpad-decor span {
+  background: var(--shell-black);
+  border-radius: 2px;
+}
+
+.dpad-decor span:nth-child(1) {
+  grid-column: 2;
+  grid-row: 1;
+}
+.dpad-decor span:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+}
+.dpad-decor span:nth-child(3) {
+  grid-column: 3;
+  grid-row: 2;
+}
+.dpad-decor span:nth-child(4) {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.search-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.search-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.9;
+}
+
+.search-row {
+  display: flex;
+  gap: 8px;
+}
+
+.search-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 10px;
+  border-radius: 6px;
+  border: none;
+  background: var(--cream);
+  color: var(--shell-black);
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.25);
+}
+
+.search-row input:focus {
+  outline: 3px solid var(--yellow);
+  outline-offset: 1px;
+}
+
+.search-row input::placeholder {
+  color: #8a8a80;
+  font-weight: 500;
+}
+
+.search-row button {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 6px;
+  background: var(--shell-black);
+  color: var(--lens-cyan);
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #000, inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.search-row button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #000;
+}
+
+.search-row button:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+.search-row button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* ---------- Speaker grill footer ---------- */
+.grill {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.grill span {
+  width: 34px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--red-darker);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 400px) {
+  .pokedex {
+    width: 100%;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .is-scanning .lens,
+  .blink {
+    animation: none;
+  }
+}
